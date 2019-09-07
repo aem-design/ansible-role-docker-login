@@ -1,6 +1,6 @@
-# Ansible Role: AEM Toughday
+# Ansible Role: Docker Login
 
-[![Build Status](https://travis-ci.org/aem-design/ansible-role-aem-toughday.svg?branch=master)](https://travis-ci.org/aem-design/ansible-role-aem-toughday)
+[![Build Status](https://travis-ci.org/aem-design/ansible-role-docker-login.svg?branch=master)](https://travis-ci.org/aem-design/ansible-role-docker-login)
 
 This role tests AEM Dispatcher instance for specific Security patterns.
 > This role was developed as part of
@@ -14,33 +14,41 @@ None.
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
-| Variable              	| Default                                                                                                                                              	| Notes                       	|
-|-----------------------	|------------------------------------------------------------------------------------------------------------------------------------------------------	|-----------------------------	|
-| docker_image_user     	| aemdesign                                                                                                                                            	| hub.docker role owner       	|
-| docker_image_name     	| "toughday"                                                                                                                                           	| hub.docker image name       	|
-| docker_image          	| "{{ docker_image_user }}/{{ docker_image_name }}"                                                                                                    	| image to use                	|
-| docker_image_tag      	| "latest"                                                                                                                                             	| image tag                   	|
-| docker_container_name 	| "toughday"                                                                                                                                           	| new container name          	|
-| java_opts             	| "-Xmx1024m"                                                                                                                                          	|                             	|
-| tool_name             	| "toughday-6.1.jar"                                                                                                                                   	|                             	|
-| docker_command        	| "java {{ java_opts }} -Dhostname={{ service_author_host }} -Dport={{ service_author_port }} -DuploadImage.count=10 -jar {{ tool_name }} uploadImage" 	| params to pass to test tool 	|
-
-## Included Tools
-
-Help on the Tough Day 2 can be found here [https://helpx.adobe.com/experience-manager/6-5/sites/developing/using/tough-day.html](https://helpx.adobe.com/experience-manager/6-5/sites/developing/using/tough-day.html) 
-
-Information on tools that can be used part of the docker image can be found here [https://hub.docker.com/r/aemdesign/toughday](https://hub.docker.com/r/aemdesign/toughday)
+| Name                        	| Required 	| Default                                                             	| Notes                                                                          	|
+|-----------------------------	|----------	|---------------------------------------------------------------------	|--------------------------------------------------------------------------------	|
+|                             	|          	|                                                                     	|                                                                                	|
+| docker_registry_username    	|          	| admin                                                               	| parameter for 'docker login --username'                                        	|
+| docker_registry_password    	|          	| admin123                                                            	| parameter for 'docker login --password'                                        	|
+| docker_registry_email       	|          	| devops@aem.design                                                   	| default email for docker login                                                 	|
+|                             	|          	|                                                                     	|                                                                                	|
+|                             	|          	|                                                                     	|                                                                                	|
+| docker_registry_host        	|          	| ansible_host                                                        	| registry hostname configured on host in /etc/hosts                             	|
+| docker_registry_port        	|          	| 5000                                                                	| registry default port                                                          	|
+| docker_registry_mirror_port 	|          	| 5001                                                                	| registry default mirror port                                                   	|
+| docker_registry_group_port  	|          	| 5002                                                                	| registry default group registry and mirror port configure group nexus          	|
+|                             	|          	|                                                                     	|                                                                                	|
+|                             	|          	|                                                                     	|                                                                                	|
+| docker_registry             	|          	| {{ docker_registry_host }}:{{ docker_registry_port }}               	| Docker private registry address                                                	|
+| docker_registry_url         	|          	| http://{{ docker_registry_host }}:{{ docker_registry_port }}        	|                                                                                	|
+| docker_registry_mirror_url  	|          	| http://{{ docker_registry_host }}:{{ docker_registry_mirror_port }} 	| default https://registry-1.docker.io                                           	|
+| docker_registry_group_url   	|          	| http://{{ docker_registry_host }}:{{ docker_registry_group_port }}  	| default https://registry-1.docker.io                                           	|
+|                             	|          	|                                                                     	|                                                                                	|
+|                             	|          	|                                                                     	|                                                                                	|
+| docker_registry_use         	|          	| true                                                                	| true to use private registry                                                   	|
+| docker_registry_images_pull 	|          	| true                                                                	| pull images from registry, inconsistent behaviour                              	|
+| docker_registry_images_push 	|          	| true                                                                	| using docker in isolation by default. set to true to push to private registry. 	|
+| docker_image_force          	|          	| false                                                               	| rebuild all docker images by default.                                          	|
 
 ## Dependencies
 
-This role depends on role `aem_design.aem_toughday`.
+This role depends on role `aem_design.docker_login`.
 
 ## Example Playbook
 
 ```yaml
 - hosts: all
   roles:
-    - aem_design.aem_toughday
+    - aem_design.docker_login
 ```
 
 ## License
