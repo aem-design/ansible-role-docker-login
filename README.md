@@ -48,7 +48,9 @@ This role depends on role `aem_design.docker_login`.
 ```yaml
 - hosts: all
   roles:
-    - aem_design.docker_login
+    - {
+      roles: aem_design.docker_login
+    }
 ```
 
 ## License
