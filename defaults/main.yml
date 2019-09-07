@@ -1,0 +1,23 @@
+---
+# default login based on nexus
+docker_registry_username: admin                             # parameter for 'docker login --username'
+docker_registry_password: admin123                          # parameter for 'docker login --password'
+docker_registry_email: devops@aem.design                    # default email for docker login
+
+# default registry addressing
+docker_registry_host: "ansible_host"                 # registry hostname configured on host in /etc/hosts
+docker_registry_port: "5000"                                # registry default port
+docker_registry_mirror_port: "5001"                         # registry default mirror port
+docker_registry_group_port: "5002"                          # registry default group registry and mirror port configure group nexus
+
+# this will be configured as insecure registry
+docker_registry: "{{ docker_registry_host }}:{{ docker_registry_port }}"                              # Docker private registry address
+docker_registry_url: "http://{{ docker_registry_host }}:{{ docker_registry_port }}"                   #
+docker_registry_mirror_url: "http://{{ docker_registry_host }}:{{ docker_registry_mirror_port }}"     # default https://registry-1.docker.io
+docker_registry_group_url: "http://{{ docker_registry_host }}:{{ docker_registry_group_port }}"       # default https://registry-1.docker.io
+
+# usage, will be updated if registry is not available
+docker_registry_use: true                                    # true to use private registry
+docker_registry_images_pull: true                             # pull images from registry, inconsistent behaviour
+docker_registry_images_push: true                            # using docker in isolation by default. set to true to push to private registry.
+docker_image_force: false                            # rebuild all docker images by default.

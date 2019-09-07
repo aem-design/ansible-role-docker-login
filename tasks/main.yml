@@ -1,0 +1,50 @@
+---
+
+- name: check if registry is available
+  uri:
+    url: "{{ docker_registry_url }}/v1/_ping"
+    return_content: true
+    timeout: 3
+  register: docker_registry_ping
+  ignore_errors: true
+  when:
+    - docker_registry_use is defined and docker_registry_use
+
+- name: check if registry is available output
+  debug:
+    msg: "{{ item.name }}={{ item.value }}"
+  no_log: "{{ debug_hide }}"
+  with_items:
+    - {
+      name: "docker_registry_ping", value: "{{ docker_registry_ping }}"
+    }
+
+- name: docker registry is not available
+  set_fact:
+    docker_registry_available: false
+  when:
+    - docker_registry_ping.failed
+
+- name: docker registry is available
+  set_fact:
+    docker_registry_available: true
+  when:
+    - not docker_registry_ping.failed
+
+- name: disable registry usage when registy is not available
+  set_fact:
+    docker_registry_use: false
+    docker_registry_images_pull: true
+    docker_registry_images_push: false
+  when:
+    - not docker_registry_available
+
+- name: login to private docker repository
+  docker_login:
+    username: "{{ docker_registry_username }}"
+    password: "{{ docker_registry_password }}"
+    registry: "{{ docker_registry }}"
+    email: "{{ docker_registry_email }}"
+  when:
+    - docker_registry_available
+  become: true
