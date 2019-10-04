@@ -20,4 +20,3 @@ docker_registry_group_url: "http://{{ docker_registry_host }}:{{ docker_registry
 docker_registry_use: true                                    # true to use private registry
 docker_registry_images_pull: true                             # pull images from registry, inconsistent behaviour
 docker_registry_images_push: true                            # using docker in isolation by default. set to true to push to private registry.
-docker_image_force: false                            # rebuild all docker images by default.

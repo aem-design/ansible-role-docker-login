@@ -37,7 +37,6 @@ Available variables are listed below, along with default values (see `defaults/m
 | docker_registry_use         	|          	| true                                                                	| true to use private registry                                                   	|
 | docker_registry_images_pull 	|          	| true                                                                	| pull images from registry, inconsistent behaviour                              	|
 | docker_registry_images_push 	|          	| true                                                                	| using docker in isolation by default. set to true to push to private registry. 	|
-| docker_image_force          	|          	| false                                                               	| rebuild all docker images by default.                                          	|
 
 ## Dependencies
 
